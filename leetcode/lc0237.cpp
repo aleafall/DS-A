@@ -1,0 +1,25 @@
+//
+// Created by aleafall on 17-3-4.
+//
+
+#include <iostream>
+
+using namespace std;
+
+struct ListNode {
+	int val;
+	ListNode *next;
+
+	ListNode(int x) : val(x), next(NULL) {}
+};
+
+class Solution {
+public:
+	void deleteNode(ListNode *node) {
+		if (!node || !node->next) {
+			return;
+		}
+		node->val = node->next->val;
+		node->next = node->next->next;
+	}
+};
