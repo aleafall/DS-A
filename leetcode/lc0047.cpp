@@ -16,10 +16,24 @@ public:
     vector<vector<int>> permuteUnique(vector<int> &nums) {
         sort(nums.begin(), nums.end());
         vector<bool> vis(nums.size(), 0);
-        DFS(nums, vis);
+//        DFS(nums, vis);
+	    helper(nums, 0);
         return ans;
     }
 
+    void helper(vector<int> &nums,int index){
+	    if (index == nums.size() - 1) {
+		    ans.push_back(nums);
+		    return;
+	    }
+	    for (int i = index; i < nums.size(); ++i) {
+		    if (i != index && nums[i] == nums[index]) {
+			    continue;
+		    }
+		    swap(nums[index], nums[i]);
+		    helper(nums, index + 1);
+	    }
+    }
     void DFS(vector<int> &nums, vector<bool> &vis) {
         if (cur.size() == nums.size()) {
             ans.push_back(cur);

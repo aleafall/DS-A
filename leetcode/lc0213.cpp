@@ -12,7 +12,7 @@ class Solution {
 public:
 	int rob(vector<int> &nums) {
 		int ans = 0;
-		if (nums.empty()) {
+		/*if (nums.empty()) {
 			return 0;
 		}
 		vector<int> dp(nums.size(), 0);
@@ -36,6 +36,35 @@ public:
 			}
 			ans = max(ans, dp[i]);
 		}
-		return ans;
+		return ans;*/
+		if (nums.empty()) {
+			return 0;
+		}
+		if (nums.size() == 1) {
+			return nums.front();
+		}
+//		return max(rob(nums, 0, nums.size() - 2), rob(nums, 1, nums.size() - 1));
+		int x = rob(nums, 0, nums.size() - 2);
+		cout << "in" << endl;
+		int y = rob(nums, 1, nums.size() - 1);
+		return max(x, y);
+	}
+
+	int rob(vector<int> &nums, int l, int r) {
+		int pre = 0, cur = 0;
+		for (int i = l; i <= r; i++) {
+			int temp = max(pre + nums[i], cur);
+			pre = cur;
+			cur = temp;
+			cout << "pre cur " << pre << " " << cur << endl;
+		}
+		return cur;
 	}
 };
+
+
+int main() {
+	vector<int> vi{1, 2, 3, 4, 5};
+	Solution solution;
+	cout << solution.rob(vi) << endl;
+}

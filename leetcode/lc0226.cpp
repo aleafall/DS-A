@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -20,7 +21,22 @@ struct TreeNode {
 class Solution {
 public:
     TreeNode *invertTree(TreeNode *root) {
-        inOrder(root);
+//        inOrder(root);
+	    stack<TreeNode*> st;
+        TreeNode *p = root;
+        while (p || !st.empty()) {
+            if (p) {
+                while (p) {
+                    st.push(p);
+                    p = p->left;
+                }
+            } else {
+                p = st.top();
+                st.pop();
+                swap(p->left, p->right);
+                p = p->left;
+            }
+        }
         return root;
     }
     void inOrder(TreeNode *root){

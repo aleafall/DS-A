@@ -8,16 +8,13 @@ using namespace std;
 class Solution {
 public:
     uint32_t reverseBits(uint32_t n) {
-        long long num=n,ans=0;
-        while (n){
-            if (n&1) ans=ans*2+1;
-            else ans*=2;
-            if (n%2) cout<<1;
-            else cout<<0;
-            n/=2;
-        }
-        cout<<endl;
-        return (uint32_t) ans;
+	    uint32_t ans = 0;
+	    for (int i = 0; i < 32; ++i) {
+		    ans <<= 1;
+		    ans |= (n & 1);
+		    n >>= 1;
+	    }
+	    return ans;
     }
 };
 
@@ -26,5 +23,10 @@ int main(){
     uint32_t n=43261596;
     cout<<solution->reverseBits(n)<<endl;
     delete solution;
+	uint32_t x = 0;
+	for (int i = 0; i < 32; ++i) {
+		cout << "x " << x << endl;
+		x <<= 1;
+	}
     return 0;
 }

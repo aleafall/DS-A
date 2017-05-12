@@ -3,55 +3,35 @@
 //
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-class A {
+class Solution {
 public:
-	A() {
-		x = 1;
+	vector<int> maxNumber(vector<int>& nums1, vector<int>& nums2, int k) {
+		vector<int> ans;
+		if (k <= 0) {
+			return ans;
+		}
+		ans.reserve(k);
+		int i = 0, j = 0;
+		k = (int) (nums1.size() + nums2.size());
+		while (k) {
+			ans.push_back(nums1[i] > nums2[j] ? nums1[i++] : nums2[j++]);
+			--k;
+		}
+		return ans;
 	}
-
-	void fa() {
-		cout << "fa" << endl;
-	}
-
-//	virtual void fva() {
-//		cout << "virtual fa\n";
-//	}
-
-	int x;
-private:
 };
 
-class B : public A {
-public:
-	B() {
-		A();
-		x = 2;
+int main(){
+	Solution solution;
+	vector<int> v1{3, 4, 6, 5}, v2{9, 1, 2, 5, 8, 3};
+	int k = 5;
+	vector<int> ans = solution.maxNumber(v1, v2, k);
+	for (auto &&item :ans) {
+		cout << item << " ";
 	}
-
-	void fa() {
-		cout << "fb" << endl;
-	}
-
-//	void fva() override {
-//		cout << "virtual fb\n";
-//	}
-
-	int x;
-private:
-};
-
-int main() {
-	A *a = new B;
-	auto c = static_cast<B *>(a);
-	a->fa();
-//	a->fva();
-	B b;
-	cout << "b "<<sizeof(b) << endl;
-	cout << a->x << endl;   //为什么是1？
-	cout << c->x << endl;
-	delete a;
-	return 0;
+	cout << endl;
 }

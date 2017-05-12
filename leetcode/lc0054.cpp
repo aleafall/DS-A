@@ -54,6 +54,7 @@ int main(){
     for (size_t i = 0; i <ans.size() ; ++i) {
         cout<<ans[i]<<endl;
     }
+	string string1;
     delete solution;
     return 0;
 }
