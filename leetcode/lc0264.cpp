@@ -12,6 +12,7 @@ using namespace std;
 class Solution {
 public:
     int nthUglyNumber(int n) {
+	    /*
         int cnt = 0;
         set<long long> st;
         st.insert(1);
@@ -26,6 +27,22 @@ public:
             cnt++;
         }
         return (int)cur;
+        */
+	    vector<int> ans(1, 1);
+	    int i2 = 0, i3 = 0, i5 = 0, m2, m3, m5,Min;
+	    while (ans.size() < n) {
+		    m2 = ans[i2] * 2, m3 = ans[i3] * m3, m5 = ans[i5] * 5;
+		    Min = min(m2, min(m3, m5));
+		    if (Min == m2) {
+			    i2++;
+		    } else if (Min == m3) {
+			    i3++;
+		    } else {
+			    i5++;
+		    }
+		    ans.push_back(Min);
+	    }
+	    return ans.back();
     }
 };
 

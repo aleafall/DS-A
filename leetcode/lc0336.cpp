@@ -12,37 +12,37 @@ class Solution {
 public:
 	vector<vector<int>> palindromePairs(vector<string> &words) {
 		vector<vector<int>> ans;
-		unordered_map<string,int> ump;
+		unordered_map<string,int> mp;
 		for (int i = 0; i < words.size(); ++i) {
-			ump[words[i]] = i;
+			mp[words[i]] = i;
 		}
-		for (int i = 0; i < words.size(); ++i) {
-			if (isPali(words[i]) && ump.count("") && words.size()) {
-				ans.push_back(vector<int>{ump[words[i]], ump[""]});
+		for (auto &&item :mp) {
+			if (item.first.empty()) {
+				continue;
 			}
-			string temp = words[i];
-			reverse(temp.begin(), temp.end());
-			if (ump.count(temp)) {
-				ans.push_back(vector<int>{ump[words[i]], ump[temp]});
+			if (isPali(item.first) && mp.count("")) {
+				ans.push_back({item.second, mp[""]});
+				ans.push_back({mp[""], item.second});
 			}
-			for (int i = 0; i < words[i].size(); ++i) {
-				string left = words[i].substr(0, i + 1), right = words[i].substr(i + 1, words[i].size());
-				if (isPali(left)) {
-					string re_right = right;
-					reverse(re_right.begin(), re_right.end());
-					if (ump.count(re_right)) {
-						ans.push_back(vector<int>{ump[words[i]], ump[re_right]});
-					}
+			auto rever = item.first;
+			reverse(rever.begin(), rever.end());
+			if (mp.count(rever)&&rever!=item.first) {
+				ans.push_back({item.second, mp[rever]});
+			}
+			for (int i = 1; i < item.first.size(); ++i) {
+				auto left = item.first.substr(0, i);
+				auto right = item.first.substr(i);
+				auto leftRe = left;
+				reverse(leftRe.begin(), leftRe.end());
+				auto rightRe = right;
+				reverse(rightRe.begin(), rightRe.end());
+				if (isPali(left) && mp.count(rightRe)) {
+					ans.push_back({mp[rightRe], item.second});
 				}
-				if (isPali(right)) {
-					string re_left = left;
-					reverse(re_left.begin(), re_left.end());
-					if (ump.count(re_left)) {
-						ans.push_back(vector<int>{ump[words[i]], ump[re_left]});
-					}
+				if (isPali(right) && mp.count(leftRe)) {
+					ans.push_back({item.second, mp[leftRe]});
 				}
 			}
-
 		}
 		return ans;
 	}
@@ -58,4 +58,12 @@ public:
 };
 
 
-
+int main() {
+    Solution so;
+	vector<string> vs{"abcd", "dcba", "lls", "s", "sssll"};
+	vector<vector<int>> ans=so.palindromePairs(vs);
+	for (auto &&item :ans) {
+		cout << item.front() << " " << item.back() << endl;
+	}
+    return 0;
+}

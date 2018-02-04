@@ -23,7 +23,7 @@ public:
 				if (word1[i - 1] == word2[j - 1]) {
 					now = dp[i - 1][j - 1];
 				} else {
-					now = now = dp[i - 1][j - 1] + 1;
+					now =  dp[i - 1][j - 1] + 1;
 				}
 				now = min(now, dp[i - 1][j] + 1);
 				dp[i][j] = min(now, dp[i][j - 1] + 1);

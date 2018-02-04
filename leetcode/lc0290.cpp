@@ -12,26 +12,27 @@ using namespace std;
 class Solution {
 public:
 	bool wordPattern(string pattern, string str) {
-		unordered_map<char, string> mp1;
-		unordered_map<string, char> mp2;
-		vector<string> vs;
-		stringstream ss(str);
 		string now;
+		vector<string> vs;
+		unordered_map<string,char> mp;
+		stringstream ss(str);
 		while (getline(ss, now, ' ')) {
 			vs.push_back(now);
 		}
-		for (int i = 0; i < pattern.size() && i < vs.size(); ++i) {
-			if (mp1.count(pattern[i])) {
-				if (mp1[pattern[i]] != vs[i] ) {
-					return 0;
-				}
-			} else {
-				if (mp2.count(vs[i]) && mp2[vs[i]] != pattern[i]) {
-					return 0;
-				}
-				mp1[pattern[i]] = vs[i];
-				mp2[vs[i]] = pattern[i];
+		if (pattern.size() != vs.size()) {
+			return 0;
+		}
+		vector<string> p[256];
+		for (int i = 0; i < pattern.size(); ++i) {
+			if (p[pattern[i]].empty()) {
+				p[pattern[i]].push_back(vs[i]);
+			} else if (p[pattern[i]].front() != vs[i]) {
+				return 0;
 			}
+			if (mp.count(vs[i]) && mp[vs[i]] != pattern[i]) {
+				return 0;
+			}
+			mp[vs[i]] = pattern[i];
 		}
 		return 1;
 	}

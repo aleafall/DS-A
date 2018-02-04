@@ -11,20 +11,26 @@ using namespace std;
 class Solution {
 public:
 	int findMaxForm(vector<string>& strs, int m, int n) {
-		sort(strs.begin(), strs.end(), [](const string &a, const string &b) {
-			if (a.size() != b.size()) {
-				return a.size() < b.size();
+		vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+		for (auto &&item :strs) {
+			int cnt[2] = {0};
+			for (auto &&c:item) {
+				cnt[c - '0']++;
 			}
-			return a < b;
-		});
-		for (int i = 0; i < strs.size(); ++i) {
-			for (int j = 0; j < strs[i].size(); ++j) {
-				strs[i][j] == '0' ? --m : --n;
-				if (m <= 0 && n <= 0) {
-					return i + 1;
+			for (int i = m; i >= cnt[0]; --i) {
+				for (int j = n; j >=cnt[1] ; --j) {
+					dp[i][j] = max(dp[i][j], dp[i - cnt[0]][j - cnt[1]] + 1);
 				}
 			}
 		}
-		return 0;
+		return dp[m][n];
 	}
 };
+
+int main() {
+	Solution solution;
+	vector<string> vs{"0", "00", "1"};
+	int m = 1, n = 0;
+	cout << solution.findMaxForm(vs, m, n) << endl;
+    return 0;
+}

@@ -14,7 +14,30 @@ public:
 	int largestRectangleArea(vector<int> &heights) {
 		int ans = 0;
 		stack<int> st;
-		for (size_t i = 0; i < heights.size(); ++i) {
+		heights.push_back(0);
+		for (int i = 0; i < heights.size(); ++i) {
+			while (!st.empty() && heights[st.top()] >= heights[i]) {
+				int now = heights[st.top()];
+				st.pop();
+				int width = st.empty() ? -1 : st.top();
+				ans = max(ans, now * (i - width - 1));
+			}
+			st.push(i);
+		}
+		return ans;
+	}
+};
+
+int main() {
+	Solution *solution = new Solution;
+	vector<int> vi{4, 2, 0, 3, 2, 4, 3, 4};
+	vi = {1, 2, 6};
+	int ans = solution->largestRectangleArea(vi);
+	cout << ans << endl;
+	delete solution;
+	return 0;
+	/*
+	 for (size_t i = 0; i < heights.size(); ++i) {
 			if (st.empty() || st.top() <= heights[i]) {
 				st.push(heights[i]);
 			} else {
@@ -36,15 +59,5 @@ public:
 			cnt++;
 			st.pop();
 		}
-		return ans;
-	}
-};
-
-int main() {
-	Solution *solution = new Solution;
-	vector<int> vi{4, 2, 0, 3, 2, 4, 3, 4};
-	int ans = solution->largestRectangleArea(vi);
-	cout << ans << endl;
-	delete solution;
-	return 0;
+	 * */
 }

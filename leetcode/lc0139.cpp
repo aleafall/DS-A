@@ -1,33 +1,34 @@
 //
 // Created by aleafall on 16-12-11.
 //
+// go back char by char
 #include<iostream>
 #include <vector>
+#include <unordered_set>
 
 using namespace std;
 
 class Solution {
 public:
 	bool wordBreak(string s, vector<string> &wordDict) {
-		if (s.empty() || wordDict.empty()) {
-			return 0;
+unordered_set<string> st;
+		for (auto &&item :wordDict) {
+			st.insert(item);
 		}
-		int target = 0, len = wordDict.size();
-		int index = 0;
-		while (index < s.size()) {
-			int temp = index;
-			for (int i = 0; i < len && index < s.size(); ++i) {
-				if (index + wordDict[i].size() <= s.size() && wordDict[i] == s.substr(index, wordDict[i].size())) {
-					index += wordDict[i].size();
-					--len;
-					swap(wordDict[i], wordDict[len]);
+		vector<bool> dp(s.size() + 1, 0);
+		dp[0] = 1;
+		for (int i = 1; i <= s.size(); ++i) {
+			for (int j = i - 1; j >= 0; --j) {
+				if (dp[j]) {
+					string now = s.substr(j, i - j);
+					if (st.count(now)) {
+						dp[i] = 1;
+						break;
+					}
 				}
 			}
-			if (temp == index) {
-				return 0;
-			}
 		}
-		return 1;
+		return dp[s.size()];
 	}
 };
 

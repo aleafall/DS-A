@@ -18,31 +18,22 @@ using namespace std;
 class Solution {
 public:
     ListNode* reverseBetween(ListNode* head, int m, int n) {
-        ListNode *ans,*p=head,*post;
-        ans = new ListNode(0);
-        post=ans;
-        int index = 1;
-        for (; index < m; ++index) {
-            ListNode *temp = p->next;
-            p->next = post->next;
-            post->next=p;
-            post=p;
-            p = temp;
-        }
-        for (; index <= n; ++index) {
-            ListNode *temp = p->next;
-            p->next = post->next;
-            post->next = p;
-            p = temp;
-        }
-        //        cout<<post->next->val<<endl;
-        while (post && post->next) {
-            cout<<post->val<<endl;
-            post = post->next;
-        }
-
-        post->next=p;
-        return ans->next;
+	    ListNode *newHead = new ListNode(0);
+	    ListNode *pre = newHead;
+	    pre->next = head;
+	    n -= m;
+	    while (--m) {
+		    pre = pre->next;
+	    }
+	    ListNode *start = pre->next, *newStart = pre->next;
+	    while (n--) {
+		    auto now = start->next;
+		    start->next = now->next;
+		    now->next = newStart;
+		    newStart = now;
+		    pre->next = newStart;
+	    }
+	    return newHead->next;
     }
 };
 

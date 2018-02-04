@@ -39,7 +39,7 @@ public:
             root=root->left;
         }
         root=st.top();st.pop();
-        TreeNode *ans=root;
+	    TreeNode *ans = root;
         root=root->right;
         return ans->val;
     }

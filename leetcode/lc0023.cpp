@@ -12,55 +12,70 @@ using namespace std;
  * Definition for singly-linked list.
  */
 struct ListNode {
-    int val;
-    ListNode *next;
+	int val;
+	ListNode *next;
 
-    ListNode(int x) : val(x), next(NULL) {}
+	ListNode(int x) : val(x), next(NULL) {}
 };
 
 class Solution {
 public:
-    ListNode *mergeKLists(vector<ListNode *> &lists) {
-        if (lists.empty())
-            return NULL;
-        vector<int> vi;
-        for (size_t i = 0; i <lists.size() ; ++i) {
-            vi.push_back((const int &) i);
-        }
-        while (vi.size() >= 2) {
-            vector<int> temp;
-            for (size_t i = 0; i <vi.size() ; i+=2) {
-                if (i + 1 < vi.size()) {
-                    ListNode *newHead = new ListNode(0);
-                    ListNode *p = lists[vi[i]], *q = lists[vi[i + 1]],*r=newHead;
-                    while (p && q) {
-                        if (p->val < q->val) {
-                            r->next=p;
-                            r=r->next;
-                            p=p->next;
-                        } else {
-                            r->next=q;
-                            r=r->next;
-                            q=q->next;
-                        }
+	ListNode *mergeKLists(vector<ListNode *> &lists) {
+		if (lists.empty()) {
+			return NULL;
+		}
+		while (lists.size() > 1) {
+			ListNode *l1 = lists.back();
+			lists.pop_back();
+			ListNode *l2 = lists.back();
+			lists.pop_back();
+			ListNode *newList = merge(l1, l2);
+			lists.push_back(newList);
+		}
+		return lists.front();
+	}
 
-                    }
-                    if (p) {
-                        r->next=p;
-                    }
-                    if (q) {
-                        r->next=q;
-                    }
-                    lists[vi[i]]=newHead->next;
-                    delete newHead;
-                    temp.push_back((const int &) vi[i]);
-                } else {
-                    temp.push_back((const int &) vi[i]);
-                }
+	ListNode *merge(ListNode *l1, ListNode *l2) {
+		if (!l1) {
+			return l2;
+		}
+		if (!l2) {
+			return l1;
+		}
+		ListNode *head = NULL;
+		if (l1->val < l2->val) {
+			head = l1;
+			l1 = l1->next;
+		} else {
+			head = l2;
+			l2 = l2->next;
+		}
 
-            }
-            vi=temp;
-        }
-        return lists[0];
-    }
+		ListNode *p = head;
+		while (l1 && l2) {
+			if (l1->val < l2->val) {
+				p->next = l1;
+				l1 = l1->next;
+			} else {
+				p->next = l2;
+				l2 = l2->next;
+			}
+			p = p->next;
+		}
+		p->next = l1 ? l1 : l2;
+		return head;
+	}
 };
+
+int main() {
+	Solution solution;
+	ListNode *node = new ListNode(1);
+	vector<ListNode *> vi{node};
+	auto head = solution.mergeKLists(vi);
+	if (head) {
+		cout << head->val << endl;
+	} else {
+		cout << "null\n";
+	}
+	return 0;
+}

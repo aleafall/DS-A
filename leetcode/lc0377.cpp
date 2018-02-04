@@ -17,7 +17,7 @@ public:
 		for (int i = 1; i <= target; ++i) {
 			for (int j = 0; j < nums.size(); ++j) {
 				if (i >= nums[j]) {
-					dp[i] += dp[i - j];
+					dp[i] += dp[i - nums[j]];
 				}
 			}
 		}

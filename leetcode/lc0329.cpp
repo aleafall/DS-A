@@ -13,34 +13,41 @@ public:
 
 	int longestIncreasingPath(vector<vector<int>> &matrix) {
 		Max = 0;
+		if (matrix.empty() || matrix[0].empty()) {
+			return 0;
+		}
+		vector<vector<int>> vis(matrix.size(), vector<int>(matrix[0].size(), 0));
 		for (int i = 0; i < matrix.size(); ++i) {
 			for (int j = 0; j < matrix[0].size(); ++j) {
-				vector<pair<int, int>> vi;
-				vi.push_back(make_pair(i, j));
-				DFS(vi, matrix);
+				Max = max(Max,DFS(i, j, matrix, 1, vis));
 			}
 		}
 		return Max;
 	}
 
-	void DFS(vector<pair<int, int>> temp, vector<vector<int>> &matrix) {
-		if (temp.size() > Max) {
-			int begX = temp.front().first, begY = temp.front().second, endX = temp.back().first, endY = temp.back().second;
-			if (temp.size() <= 2 || abs(begX - endX) + abs(begY - endY) > 1) {
-				Max = (int) temp.size();
-			}
+	int DFS(int endX, int endY, vector<vector<int>> &matrix, int cnt, vector<vector<int>> &vis) {
+		if (vis[endX][endY]) {
+			return vis[endX][endY];
 		}
+		int ans = 0;
 		int Y[4] = {-1, 1, 0, 0}, X[4] = {0, 0, -1, 1};
 		for (int i = 0; i < 4; ++i) {
-			int endX = temp.back().first, endY = temp.back().second;
 			int newX = endX + X[i], newY = endY + Y[i];
 			if (newX >= 0 && newX < matrix.size() && newY >= 0 && newY < matrix[0].size()) {
 				if (matrix[newX][newY] > matrix[endX][endY]) {
-					temp.push_back(make_pair(newX, newY));
-					DFS(temp, matrix);
+					ans = max(ans, DFS(newX, newY, matrix, cnt + 1, vis));
 				}
 			}
 		}
+		vis[endX][endY] = ans + 1;
+		return ans+1;
 	}
 };
 
+int main() {
+	Solution solution;
+	vector<vector<int>> vi{};
+
+	cout << solution.longestIncreasingPath(vi) << endl;
+	return 0;
+}
